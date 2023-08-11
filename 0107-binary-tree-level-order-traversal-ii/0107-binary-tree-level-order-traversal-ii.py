@@ -6,12 +6,18 @@
 #         self.right = right
 class Solution:
     def levelOrderBottom(self, root: Optional[TreeNode]) -> List[List[int]]:
-        d = defaultdict(list)
-        
-        def dfs(node, level):
-            if node:
-                d[level].append(node.val)
-                dfs(node.left, level+1)
-                dfs(node.right, level+1) 
-        dfs(root, 0)
-        return reversed(list(d.values()))
+        res = []
+        q = collections.deque()
+        q.append(root)
+        while q:
+            qLen = len(q)
+            level = []
+            for _ in range(qLen):
+                node = q.popleft()
+                if node:
+                    level.append(node.val)
+                    q.append(node.left)
+                    q.append(node.right)
+            if level:
+                res.append(level)
+        return reversed(res)
